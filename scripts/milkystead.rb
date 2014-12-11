@@ -11,4 +11,5 @@ class Milkystead
           s.args = [site["map"], site["to"]]
       end
     end
+  end
 end
