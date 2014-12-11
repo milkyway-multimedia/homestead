@@ -8,6 +8,7 @@ afterScriptPath = File.expand_path("~/.homestead/after.sh")
 aliasesPath = File.expand_path("~/.homestead/aliases")
 
 require_relative 'scripts/homestead.rb'
+require_relative 'scripts/milkystead.rb'
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	if File.exists? aliasesPath then
