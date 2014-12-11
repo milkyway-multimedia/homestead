@@ -1,5 +1,5 @@
 {
-    "name": "laravel/homestead",
+    "name": "milkyway-multimedia/homestead",
     "description": "A virtual machine for web artisans.",
     "require": {
         "php": ">=5.4",
