@@ -21,5 +21,8 @@
     "bin": [
         "homestead"
     ],
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "replace": {
+        "laravel/homestead": "self.version"
+    }
 }
