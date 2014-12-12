@@ -4,13 +4,15 @@ class Milkystead
     config.landrush.enabled = true
     config.landrush.tld = 'dev'
 
-     configScriptPath = File.expand_path("/vagrant/configure")
+    # Run some files to configure before configuring milkyway sites
+    Dir.foreach(File.join(Dir.pwd, '/configure')) do |script|
+      next if script == '.' or script == '..'
+      config.vm.provision "shell" do |s|
+        s.inline = "bash /vagrant/configure/" + script
+      end
+    end
 
-     if File.exists? configScriptPath then
-       config.vm.provision "shell", path: configScriptPath
-     end
-
-    # Install All The Configured Milkyway Sites
+    # Install all the configured Milkyway Sites
     if settings.has_key?("mwm")
       settings["mwm"].each do |site|
         config.vm.provision "shell" do |s|

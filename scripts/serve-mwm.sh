@@ -48,13 +48,19 @@ block='server {
         deny all;
     }
 
+    client_max_body_size 10M;
+
+    location ~* (.+)\.(?:\d+)\.(js|css|png|jpg|jpeg|gif)$ {
+       try_files $uri $1.$2;
+    }
+
     include /etc/nginx/h5bp/basic.conf;
 }
 
 '
 
 echo > '/etc/nginx/sites-available/'${site}
-echo ${block} >> '/etc/nginx/sites-available/'${site}
+echo "$block" >> '/etc/nginx/sites-available/'${site}
 ln -s '/etc/nginx/sites-available/'${site} '/etc/nginx/sites-enabled/'${site}
 
 service nginx restart && service php5-fpm restart

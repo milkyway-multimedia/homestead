@@ -2,7 +2,7 @@
 
 file='/etc/nginx/nginx.conf'
 
-if [-e ${file} ]; then
+if [ -e ${file} ]; then
 	mv ${file} ${file}.bak
 fi
 
@@ -20,7 +20,7 @@ events {
 
 # Default error log file
 # (this is only used when you dont override error_log on a server{} level)
-error_log  /var/logs/nginx/error.log warn;
+error_log  /var/log/nginx/error.log warn;
 pid        /var/run/nginx.pid;
 
 http {
@@ -32,11 +32,6 @@ http {
 
   # Update charset_types due to updated mime.types
   charset_types text/xml text/plain text/vnd.wap.wml application/x-javascript application/rss+xml text/css application/javascript application/json;
-
-  # Format to use in log files
-  log_format  main  \'$remote_addr - $remote_user [$time_local] "$request" \'
-                    \'$status $body_bytes_sent "$http_referer" \'
-                    \'"$http_user_agent" "$http_x_forwarded_for"\';
 
   keepalive_timeout 20;
   sendfile        off;
@@ -99,17 +94,16 @@ http {
   #ssl_certificate_key  /etc/nginx/default_ssl.key;
 
   fastcgi_temp_file_write_size 10m;
-  fastcgi_busy_buffers_size    512k;
-  fastcgi_buffer_size          512k;
-  fastcgi_buffers           16 512k;
   fastcgi_connect_timeout 300;
   fastcgi_send_timeout 300;
   fastcgi_read_timeout 1200;
 
   include /etc/nginx/conf.d/*.conf;
   include /etc/nginx/sites-enabled/*;
-}';
+}
+'
 
-echo ${block} >> ${file}
+echo > "$file"
+echo "$block" >> "$file"
 
 service nginx restart && service php5-fpm restart
