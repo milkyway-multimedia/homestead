@@ -23,6 +23,8 @@ fi
 
 curl -L -o ${mime} 'https://raw.githubusercontent.com/h5bp/server-configs-nginx/master/mime.types'
 
+sed -i.bak "s/access_log logs\/static.log/access_log \/var\/log\/nginx\-static.log/g" "${dir}/location/expires.conf"
+
 block='# Basic h5bp rules
 
 include '${dir}'/location/cache-busting.conf;
@@ -33,6 +35,7 @@ include '${dir}'/location/protect-system-files.conf;
 '
 
 touch ${dir}'/basic.conf'
+touch ${dir}'/var/log/nginx-static.log'
 echo "$block" > ${dir}'/basic.conf'
 
 nginx -t && service nginx reload

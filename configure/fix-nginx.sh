@@ -97,6 +97,8 @@ http {
   fastcgi_connect_timeout 300;
   fastcgi_send_timeout 300;
   fastcgi_read_timeout 1200;
+  fastcgi_buffers 8 16k;
+  fastcgi_buffer_size 32k;
 
   include /etc/nginx/conf.d/*.conf;
   include /etc/nginx/sites-enabled/*;
