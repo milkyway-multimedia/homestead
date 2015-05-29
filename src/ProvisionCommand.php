@@ -5,7 +5,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class StatusCommand extends Command {
+class ProvisionCommand extends Command {
 
 	/**
 	 * Configure the command options.
@@ -14,8 +14,8 @@ class StatusCommand extends Command {
 	 */
 	protected function configure()
 	{
-		$this->setName('status')
-                  ->setDescription('Get the status of the Homestead machine');
+		$this->setName('provision')
+			->setDescription('Re-provisions the Homestead machine');
 	}
 
 	/**
@@ -27,7 +27,7 @@ class StatusCommand extends Command {
 	 */
 	public function execute(InputInterface $input, OutputInterface $output)
 	{
-		$process = new Process('vagrant status', realpath(__DIR__.'/../'), array_merge($_SERVER, $_ENV), null, null);
+		$process = new Process('vagrant provision', realpath(__DIR__.'/../'), array_merge($_SERVER, $_ENV), null, null);
 
 		$process->run(function($type, $line) use ($output)
 		{

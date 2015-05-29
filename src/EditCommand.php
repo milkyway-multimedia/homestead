@@ -29,7 +29,7 @@ class EditCommand extends Command {
 	{
 		$command = $this->executable().' '.homestead_path().'/Homestead.yaml';
 
-		$process = new Process($command, realpath(__DIR__.'/../'), $_ENV, null, null);
+		$process = new Process($command, realpath(__DIR__.'/../'), array_merge($_SERVER, $_ENV), null, null);
 
 		$process->run(function($type, $line) use ($output)
 		{
@@ -44,7 +44,16 @@ class EditCommand extends Command {
 	 */
 	protected function executable()
 	{
-		return strpos(strtoupper(PHP_OS), 'WIN') === 0 ? 'start' : 'open';
+		if (strpos(strtoupper(PHP_OS), 'WIN') === 0)
+		{
+			return 'start';
+		}
+		elseif (strpos(strtoupper(PHP_OS), 'DARWIN') === 0)
+		{
+			return 'open';
+		}
+
+		return 'xdg-open';
 	}
 
 }

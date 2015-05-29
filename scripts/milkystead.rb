@@ -1,7 +1,5 @@
 class Milkystead
   def Milkystead.configure(config, settings)
-    config.vm.hostname = "dev"
-
     config.landrush.enabled = true
     config.landrush.tld = config.vm.hostname
 
