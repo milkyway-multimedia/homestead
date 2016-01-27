@@ -16,7 +16,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   if File.exists? aliasesPath then
     config.vm.provision "file", source: aliasesPath, destination: "~/.bash_aliases"
   end
-    
+
   if File.exists? homesteadYamlPath then
     Homestead.configure(config, YAML::load(File.read(homesteadYamlPath)))
     Milkystead.configure(config, YAML::load(File.read(homesteadYamlPath)))

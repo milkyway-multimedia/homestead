@@ -4,10 +4,12 @@ class Milkystead
     config.landrush.tld = config.vm.hostname
 
     # Run some files to configure before configuring milkyway sites
-    Dir.foreach(File.join(Dir.pwd, '/configure')) do |script|
-      next if script == '.' or script == '..'
-      config.vm.provision "shell" do |s|
-        s.inline = "bash /vagrant/configure/" + script
+    if Dir.exists? File.join(Dir.pwd, '/configure')
+      Dir.foreach(File.join(Dir.pwd, '/configure')) do |script|
+        next if script == '.' or script == '..'
+        config.vm.provision "shell" do |s|
+          s.inline = "bash /vagrant/configure/" + script
+        end
       end
     end
 
