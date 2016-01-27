@@ -11,12 +11,12 @@ block="server {
     server_name $1;
     root \"$2\";
 
-    index index.html index.htm index.php app.php;
+    index index.html index.htm index.php app_dev.php;
 
     charset utf-8;
 
     location / {
-        try_files \$uri \$uri/ /app.php?\$query_string;
+        try_files \$uri \$uri/ /app_dev.php?\$query_string;
     }
 
     location = /favicon.ico { access_log off; log_not_found off; }
@@ -31,10 +31,11 @@ block="server {
 
     # DEV
     location ~ ^/(app_dev|config)\.php(/|\$) {
-        fastcgi_split_path_info ^(.+\.php)(/.*)\$;
-        fastcgi_pass unix:/var/run/php5-fpm.sock;
+        fastcgi_split_path_info ^(.+\.php)(/.+)\$;
+        fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+
         fastcgi_intercept_errors off;
         fastcgi_buffer_size 16k;
         fastcgi_buffers 4 16k;
@@ -42,16 +43,14 @@ block="server {
 
     # PROD
     location ~ ^/app\.php(/|$) {
-        fastcgi_split_path_info ^(.+\.php)(/.*)$;
-        fastcgi_pass unix:/var/run/php5-fpm.sock;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+
         fastcgi_intercept_errors off;
         fastcgi_buffer_size 16k;
         fastcgi_buffers 4 16k;
-        # Prevents URIs that include the front controller. This will 404:
-        # http://domain.tld/app.php/some-path
-        # Remove the internal directive to allow URIs like this
         internal;
     }
 
@@ -67,4 +66,4 @@ block="server {
 echo "$block" > "/etc/nginx/sites-available/$1"
 ln -fs "/etc/nginx/sites-available/$1" "/etc/nginx/sites-enabled/$1"
 service nginx restart
-service php5-fpm restart
+service php7.0-fpm restart
